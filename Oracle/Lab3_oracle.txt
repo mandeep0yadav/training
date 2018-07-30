@@ -1,0 +1,82 @@
+1. Write a query which displays Staff Name, Department Code, Department Name, and Salary for all staff who earns more than 20000.
+
+select A.Staff_Name, A.Dept_Code, A.Staff_sal 
+from staff_Masters A, DEPARTMENT_MASTERS B 
+where A.Dept_Code=B.Dept_Code and A.Staff_sal>20000;
+========================================================================================================================================
+
+2. Write a query to display Staff Name, Department Code, and Department Name for all staff who do not work in Department code 10 and have
+ ‘A’ in their name.
+
+
+ select A.Staff_Name, A.Dept_Code,B.Dept_Code
+ from staff_Masters A, DEPARTMENT_MASTERS B
+ where A.Dept_Code=B.Dept_Code and A.Dept_Code not in 10;
+
+========================================================================================================================================
+3. Display Staff Code, Staff Name, Department Name, and his manager’s number and name. Label the columns Staff#, Staff, Mgr#, Manager. 
+
+select A.Staff_Code as staff# ,A.Staff_Name as staff,B.Dept_name,A.Mgr_code as mgr#,A.Staff_Name
+from staff_Masters A, DEPARTMENT_MASTERS B IN
+(select )
+
+========================================================================================================================================
+4. Create a query that will display Student Code, Student Name, Department Name, Subjec1, Subject2, and Subject3 for all students who are
+ getting 60 and above in each subject from department 10 and 20.
+
+========================================================================================================================================
+5. Create a query that will display Student Code, Student Name, Book Code, and Book Name for all students whose expected book return date 
+is today.
+
+========================================================================================================================================
+6. Create a query that will display Staff Code, Staff Name, Department Name, Designation, Book Code, Book Name, and Issue Date. For only 
+those staff who have taken any book in last 30 days. 
+
+
+========================================================================================================================================
+7. Generate a report which contains the following information.
+Staff Code	Staff Name	Designation	Department Name	 
+Department Head
+For all staff excluding HOD (List should not contain the details of Department head).
+
+
+
+========================================================================================================================================
+8. Generate a report which contains the following information
+Student Code		Student Name	Department Name	Total Marks  
+ HOD Name
+Sort the output on Department Name and Total Marks.
+========================================================================================================================================
+9. Generate a report which contains the following information.
+Staff Code, Staff Name, Designation, Department, Book Code, Book Name,
+ Author, Fine 
+For the staff who have not return the book. Fine will be calculated as Rs. 5 per day. 
+Fine = 5 * (No. of days = Current Date – Expected return date).
+========================================================================================================================================
+10. List Staff Code, Staff Name, and Salary for those who are getting less than the average salary of organization.
+========================================================================================================================================
+11. List the Staff Code, Staff Name who are not Manager. 
+========================================================================================================================================
+
+12. Display Author Name, Book Name for those authors who wrote more than one book.
+========================================================================================================================================
+
+13. Display Staff Code, Staff Name, and Department Name for those who have taken more than one book. 
+========================================================================================================================================
+
+14. Display top ten students for a specified department.  Details are:
+ Student Code, Student Name, Department Name, Subject1, Subject2, 
+  Subject3, Total.
+========================================================================================================================================
+15. Display the Staff Name, Department Name, and Salary for those staff who are getting less than average salary in their own department
+========================================================================================================================================
+16. Create a query that will display the Staff Name, Department Name, and all the staff that work in the same department as a given staff. Give the column as appropriate label.
+========================================================================================================================================
+17. List the Student Code, Student Name for that student who got highest marks in all three subjects in Computer Science department for current year.
+========================================================================================================================================
+18. Display the Student Code, Student Name, and Department Name for that department in which there are maximum number of student are studying.
+========================================================================================================================================
+19. Display Staff Code, Staff Name, Department Name, and Designation for those who have joined most recently.
+========================================================================================================================================
+20. Display the Manager Name and the total strength of his/her team.
+========================================================================================================================================

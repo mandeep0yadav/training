@@ -1,0 +1,140 @@
+4.1 Write a PL/SQL block to find the maximum salary of the staff in the given department. Note: Department code should be passed as 
+parameter to the cursor.
+
+
+DECLARE
+
+dept_code1 staff_master.dept_code%TYPE;
+max_sal staff_master.staff_sal%TYPE;
+
+
+
+CURSOR staff_details IS
+select max(staff_sal) from staff_master where dept_code=dept_code1;
+
+
+
+BEGIN
+
+dept_code1:=&dept_code;
+OPEN staff_details;
+LOOP
+
+fetch staff_details into max_sal;
+
+EXIT when staff_details %NOTFOUND; 
+dbms_output.put_line('  maximum salary of department '|| dept_code1||' is '||max_sal||'   ');
+
+END LOOP;
+CLOSE Staff_details;
+
+END; 
+/
+
+
+4.2. Write a function to compute age. The function should accept a date and return age in years.
+
+
+DECLARE
+
+dob DATE:= to_date('&dob', 'MM-DD-YYYY');
+age NUMBER(10);
+
+BEGIN
+
+age:=Trunc(months_between(sysdate,dob)/12);
+dbms_output.put_line(age);
+
+END;
+/
+
+
+4.3. Write a procedure that accept staff code and update staff name to Upper case. If the staff name is null raise a user defined exception.
+
+CREATE OR REPLACE PROCEDURE getMgrName(staffcode IN staff_master.staff_code%TYPE )
+is
+
+staffcode staff_master.staff_code%TYPE;
+staffname staff_master.staff_name%TYPE;
+deptcode staff_master.dept_code%TYPE;
+mgrname  staff_master.staff_name%TYPE;
+
+
+CURSOR staff_details IS
+select  A.staff_name , A.dept_code , B.staff_name  from staff_masters A , staff_masters B where A.mgr_code=B.staff_code and A.staff_code IN (select staff_code from staff_masters where staff_code=staffcode);
+
+
+
+BEGIN
+
+staffcode:=&staffcode;
+OPEN staff_details;
+LOOP
+
+fetch staff_details into staffname, deptcode, mgrname;
+
+EXIT when staff_details %NOTFOUND; 
+dbms_output.put_line( 'staffcode'  || 'staffname'  ||  'deptcode'   || 'mgrname' ); 
+dbms_output.put_line( staffcode  || staffname  ||  deptcode   || mgrname );
+
+END LOOP;
+CLOSE Staff_details;
+
+END; 
+
+staffcode staff_masters.staff_code%TYPE;
+staffname staff_masters.staff_name%TYPE;
+
+BEGIN
+
+staffcode:=&staffcode;
+ 
+UPDATE staff_master set    staff_name = upper(staff_name) where staff_code=staffcode;
+
+END; 
+/
+
+
+4.4.Write a procedure to find the manager of a staff. Procedure should return the following – Staff_Code, Staff_Name, Dept_Code
+ and Manager Name.
+
+
+CREATE OR REPLACE PROCEDURE getMgrName(staffcode IN staff_master.staff_code%TYPE )
+is
+
+
+staffname staff_master.staff_name%TYPE;
+deptcode staff_master.dept_code%TYPE;
+mgrname  staff_master.staff_name%TYPE;
+
+
+CURSOR staff_details IS
+select  A.staff_name , A.dept_code , B.staff_name  from staff_masters A , staff_masters B where A.mgr_code=B.staff_code and A.staff_code IN (select staff_code from staff_masters where staff_code=staffcode);
+
+
+
+BEGIN
+
+OPEN staff_details;
+LOOP
+
+fetch staff_details into staffname, deptcode, mgrname;
+
+EXIT when staff_details %NOTFOUND; 
+dbms_output.put_line( 'staffcode'  || 'staffname'  ||  'deptcode'   || 'mgrname' ); 
+dbms_output.put_line( staffcode  || staffname  ||  deptcode   || mgrname );
+
+END LOOP;
+CLOSE Staff_details;
+
+END getMgrname; 
+
+
+
+
+
+
+
+
+
+

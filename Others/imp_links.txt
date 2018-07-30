@@ -1,0 +1,13 @@
+
+--For Daily quizes
+https://icompass.fs.capgemini.com/iCompass/#/login
+
+
+--For online test
+https://icompass.fs.capgemini.com  
+
+
+--For Assignment and MPT upload
+
+http://ndafile:8081/iUpload/upload/upload.action
+

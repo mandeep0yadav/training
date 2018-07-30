@@ -1,0 +1,187 @@
+2.1 
+
+Identify the problems(if any) in the below declarations:
+
+
+
+DECLARE
+V_Sample1 NUMBER(2);
+V_Sample2 CONSTANT NUMBER(2) ;((IT SHOULD HAVE SOME VALUE))
+V_Sample3 NUMBER(2) NOT NULL ;
+V_Sample4 NUMBER(2) := 50;
+V_Sample5 NUMBER(2) DEFAULT 25;
+
+
+2.2
+The following PL/SQL block is incomplete.
+Modify the block to achieve requirements as stated in the comments in the block.
+
+
+
+DECLARE 
+var_num1 NUMBER := 5;
+BEGIN
+
+DECLARE 
+var_num1 NUMBER := 10;
+BEGIN
+
+IF (var_num1 = 5) THEN
+DBMS_OUTPUT.PUT_LINE(var_num1);
+ELSIF (var_num1 = 10) THEN
+DBMS_OUTPUT.PUT_LINE(var_num1);
+END IF;
+END;
+DBMS_OUTPUT.PUT_LINE(var_num1);
+End;
+
+
+
+2.3. Write a PL/SQL block to retrieve all staff (code, name, salary) under 
+specific department number and display the result. (Note: The Department_Code will be accepted from user. Cursor to be used.)
+
+DECLARE 
+DEPT_CODE1 NUMBER;
+staffCode NUMBER(6); 
+name varchar2 (20);
+staffSal NUMBER (8);
+
+
+CURSOR Staff_rec IS
+select staff_name, staff_code, staff_sal from staff_masters  where dept_code= DEPT_CODE1;
+
+BEGIN 
+DEPT_CODE1:=&DEPT_CODE1;
+
+OPEN Staff_rec;
+LOOP
+fetch Staff_rec into name,staffCode, staffSal;
+EXIT when staff_rec %NOTFOUND; 
+ 
+dbms_output.put_line('Staff CODE: ' || staffCode ||'Staff Name: ' || name || 'Staff SALARY: ' || staffSal);  
+
+END LOOP;
+CLOSE Staff_rec;
+END; 
+/
+
+2.4. Write a PL/SQL block to increase the salary by 30 % or 5000 whichever minimum for a given Department_Code. 
+
+
+DECLARE
+staffsal NUMBER (8);
+staffsal1 NUMBER (8);
+staffsal2 NUMBER (8);
+name varchar2 (20);
+
+CURSOR Staff_rec IS
+select staff_name, staff_sal from staff_masters;
+
+BEGIN 
+
+OPEN Staff_rec;
+LOOP
+fetch Staff_rec into name,staffSal;
+EXIT when staff_rec %NOTFOUND; 
+
+staffsal1:=staffsal*1.3;
+staffsal2:=staffsal2+5000;
+
+if(staffsal1>staffsal2) then
+staffsal:=staffsal2;
+else
+staffsal:=staffsal1;
+end if;
+dbms_output.put_line('Salary of '||name || 'is ' || staffSal); 
+END LOOP;
+CLOSE Staff_rec;
+END; 
+/
+
+
+
+2.5. Write a PL/SQL block to generate the following report for a given Department code
+Student_Code  Sudent_Name   Subject1   Subject2   Subject3   Total  	Percentage   Grade
+
+DECLARE
+studcode NUMBER (5);
+deptcode NUMBER (5);
+studname varchar2 (20);
+subj1 varchar2 (20);
+subj2 varchar2 (20);
+subj3 varchar2 (20);
+total number (5);
+per number (3);
+grade varchar2 (3);
+
+CURSOR Stud_rec IS
+select student_code, student_name, Subject1 ,Subject2, Subject3 from0 student_masters natural join Student_Marks ;
+
+BEGIN 
+dbms_output.put_line( 'studcode'  || 'studname'  ||  'subj1'   || 'subj2'  || 'subj3'   ||  'total'||   'per' ||  'grade' ); 
+
+OPEN Stud_rec;
+LOOP
+fetch Stud_rec into studcode,studname,subj1,subj2,subj3;
+EXIT when stud_rec %NOTFOUND; 
+
+
+total := subj1+ subj2 + subj3;
+per:=(total*100)/300;
+
+if(per >= 80)
+then 
+grade:= 'A';
+elsif(per >= 70 and per< 80)
+then 
+grade:= 'B';
+elsif(per >= 60 and per< 70)
+then grade:= 'C';
+else 
+grade:='D';
+
+end if;
+
+dbms_output.put_line( studcode||' '  ||studname||'  '||subj1||'   '||subj2||'  '||subj3||'   '||total||'   '||per||'  '||grade ); 
+END LOOP;
+CLOSE Stud_rec;
+END; 
+/
+
+
+2.6. Write a PL/SQL block to retrieve the details of the staff belonging to a particular department. Department code should be passed
+ as a parameter to the cursor.
+
+
+
+
+DECLARE 
+DEPT_CODE1 staff_master.dept_code%type;
+staffCode staff_master.staff_code%type; 
+name staff_master.staff_name%type;
+desgcode staff_master.design_code%type;
+staffdob staff_master.staff_dob%type;
+hiredate staff_master.hiredate%type;
+mgrcode staff_master.mgr_code%type;
+staffSal staff_master.staff_sal%type;
+staffadd staff_master.staff_address%type;
+
+CURSOR Staff_rec IS
+select staff_name, staff_code, design_code, staff_dob, hiredate, mgr_code, staff_sal, staff_address from staff_masters  where dept_code= DEPT_CODE1;
+
+BEGIN 
+DEPT_CODE1:=&DEPT_CODE1;
+
+OPEN Staff_rec;
+LOOP
+fetch Staff_rec into name,staffCode,desgcode,staffdob, hiredate, mgrcode, staffSal, staffadd;
+EXIT when staff_rec %NOTFOUND; 
+ 
+dbms_output.put_line('     '||staffCode||'    '||name||'    '||desgcode||'    '||staffdob||'  '||hiredate||'    '||mgrcode||'    '||staffSal||'    '||staffadd);  
+
+END LOOP;
+CLOSE Staff_rec;
+END; 
+/
+
+

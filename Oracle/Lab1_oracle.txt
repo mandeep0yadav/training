@@ -1,0 +1,70 @@
+1.Retrieve the details (name, Salary and dept code) of the employees who are working in department 20, 30 and 40. 
+
+select ename, sal, deptno from emp where deptno in (10,20,40);
+----------------------------------------------------------------------------------------------------
+
+2. List the details of the employees with user defined Column headers.
+
+select empno as emp_number, ename as emp_name, job as job, mgr as mgr_number, hiredate as hire_date, sal as salary, comm as commm, deptno as dept_number from emp;
+----------------------------------------------------------------------------------------------------
+
+3.Display the code, subjects and total marks for every student. Total Marks will be     calculated as Subject1+Subject2+Subject3. (Refer Student_Marks table)
+
+select Student_Code, Subject1, Subject2, Subject3 , Subject1+Subject2+Subject3 as total from STUDENT_MARKS;
+----------------------------------------------------------------------------------------------------
+4.. List the details of the staff whose designations are either PROFESSOR or LECTURER.  
+
+select * from STAFF_MASTERS A,Designation_Masters B where A.Design_Code=B.Design_Code and B.Design_Name in ('Professor', 'Lecturer');
+----------------------------------------------------------------------------------------------------
+5. List the code, name, and department number of the employees who have experience of more than 18 years. 
+
+select Staff_Code,Staff_Name,Dept_Code from STAFF_MASTERS where (SYSDATE-Hiredate)>18;
+----------------------------------------------------------------------------------------------------
+
+6.List the name and Designations of the staff who have joined before Jan 2003.
+
+select staff_Masters.Staff_Name, Designation_Masters.Design_Name from staff_Masters NATURAL JOIN Designation_Masters WHERE hiredate<TO_DATE('01-2003','MM-YYYY');
+
+----------------------------------------------------------------------------------------------------
+7.List the name, designation, and income for 10 years of the employees who are working in departments 10 and 30. 
+
+select A.Staff_Name,B.Design_Name,A.Staff_sal from staff_Masters A NATURAL JOIN Designation_Masters  B  where (SYSDATE-Hiredate)>10 and A.Dept_Code in (10,30);
+----------------------------------------------------------------------------------------------------
+
+8.List the name and experience (in years) of employees who are working as LECTURER. 
+
+select A.Staff_Name, (SYSDATE-A.Hiredate) as "Experience" from staff_Masters A NATURAL JOIN Department_Masters B where B.Dept_Name='Lecturer';
+
+----------------------------------------------------------------------------------------------------
+
+9.Display name concatenated with dept code separated by comma and space. Name the column as ‘Student Info’.
+
+select (Student_Name||', '||Dept_Code) as Student_Info from Student_Masters;
+----------------------------------------------------------------------------------------------------
+
+10.List the Name and Salary of the staff who are earning between 12000 and 25000. Sort them based on their salaries and name. 
+select Staff_Name, Staff_sal from STAFF_MASTERS where Staff_sal BETWEEN 12000 and 25000 ORDER BY Staff_sal,Staff_Name;
+
+----------------------------------------------------------------------------------------------------
+
+11.Display employees who do not have manager.
+select Staff_Name from staff_Masters where Mgr_code is NULL;
+
+----------------------------------------------------------------------------------------------------
+12 . Write a query which will display name, department code and date of birth of all students who were born between January 1, 1981 and March 31, 1983. Sort it based 
+on date of birth (ascending).
+
+select Student_Name, Dept_Code, Student_Dob from Student_Masters where Student_Dob Between TO_DATE('01-01-1981','dd-mm-yyyy') and TO_DATE('31-03-1983','dd-mm-yyyy');
+
+----------------------------------------------------------------------------------------------------
+
+13.. Get the Department number, and sum of Salary of all non managers where the sum is greater than 20000.
+
+select DEPARTMENT_MASTERS.Dept_code, sum(STAFF_MASTERS.Staff_sal) from DEPARTMENT_MASTERS NATURAL JOIN STAFF_MASTERS where 
+sum(STAFF_MASTERS.Staff_sal)>20000 and  not having STAFF_MASTERS.Mgr_code;
+----------------------------------------------------------------------------------------------------
+
+14. Display the details of books that have not been returned and expected return date was last Monday.
+
+select * from BOOK_MASTERS  NATURAL  JOIN BOOK_TRANSACTIONS  where
+ Book_expected_return_date=NEXT_DAY('SYSDATE-7','monday') and Book_actual_return_date is NULL;

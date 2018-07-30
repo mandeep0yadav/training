@@ -1,0 +1,139 @@
+                                            LAB 2
+
+
+1. Display name and date of birth of students where date of birth must be displayed in the format
+ similar to “January, 12 1981” for those who were born on Saturday or Sunday.
+
+select Student_Name, to_char(Student_Dob  ,'month,dd yyyy') 
+from Student_Masters 
+where TO_CHAR(Student_Dob, 'DAY')='Saturday'or TO_CHAR(Student_Dob, 'DAY')='Sunday';
+
+2. Display each staff name and number of months they worked for the organization. Label the column
+ as ‘Months Worked’. Order your result by number of months employed. Round the number of months to
+ closest whole number.
+
+select Staff_Name, ROUND(MONTHS_BETWEEN(SYSDATE,Hiredate)) as Months_Worked 
+from staff_Masters 
+order by Months_Worked;
+
+3. List the details of the employees, whose names start with ‘A’ and end with ‘S’. 
+
+select * from staff_masters
+where Staff_Name like 'A%s';
+
+4 List the name and job of the employees whose names should contain N as the second or third 
+character, and ending with either ‘N’ or ‘S’.
+
+select Staff_Name, Staff_dob from staff_masters
+where Staff_Name 
+like '_n%n' or Staff_Name like '_n%s' or Staff_Name like '__n%n' or Staff_Name like '__n%s';
+
+5.Create a query which will display Staff Name, Salary of each staff. Format the salary to be 
+ 15 character long and left padded with ‘$’. 
+
+select Staff_Name, LPAD(Staff_sal,15,'$') from staff_Masters;
+
+6. List the names of the Employees having ‘_’ character in their name.
+
+select Staff_Name from staff_Masters where Staff_Name like '%\_%' escape '\';
+
+7. List the details of the employees who have joined in December (irrespective of the year).
+
+select * from
+staff_masters where to_char(hiredate,'mon')='Dec';
+
+8 Write a query that displays Staff Name, Salary, and Grade of all staff. Grade depends on
+ the following table. 
+
+select Staff_Name, Staff_sal ,
+case
+when Staff_sal>=50000 then 'A'
+when Staff_sal>=25000 and Staff_sal< 50000 then 'B'
+when Staff_sal>=10000 and Staff_sal< 25000 then 'c'
+else 'D'
+end as GRADE 
+from STAFF_MASTERS ;
+
+9. Display the Staff Name, Hire date and day of the week on which staff was hired. Label the 
+column as DAY. Order the result by the day of the week starting with Monday.
+
+select Staff_Name, Hiredate , to_char(hiredate,'DAY') as Day 
+from STAFF_MASTERS 
+order by mod(to_char(hiredate, 'D') + 5, 7);
+ 
+10.Show staff names with the respective numbers of asterisk from Staff table. 
+
+ select Staff_Name,LPAD('*',length(Staff_name),'*') from staff_Masters;
+
+11. Show staff names with the respective numbers of asterisk from Staff table except first 
+  and last characters. For example: KING will be replaced with K**G. 
+
+select Staff_Name, substr(staff_name,0,1)||
+LPAD('*',length(Staff_name)-2,'*')||substr(staff_name,length(staff_name),1) as staffname
+ from staff_Masters;
+
+12. Show all staffs who were hired in the first half of the month. 
+select * from staff_masters where to_char(hiredate,'dd')<16;
+
+13. Display the staff name, hire date and day of the week on which the staff joined. Order 
+  the results by the day of the week starting with Monday. 
+
+select staff_name, hiredate, to_char(hiredate,'day') as hireday 
+from staff_masters 
+order by mod(to_char(hiredate, 'D') + 5, 7);
+
+14.Write a query to find the position of third occurrence of ‘i’ in the given word ‘Mississippi’.
+
+SELECT instr( 'Mississippi','i',  1,3) as pos from dual;
+
+
+15.Write a query to find the pay date for the month. Pay date is the last Friday of the month.
+ Display the date in the format “Twenty Eighth of January, 2002”. Label the heading as PAY DATE.
+
+select 
+
+16. Display the Highest, Lowest, Total & Average salary of all staff. Label the columns Maximum,
+ Minimum, Total and Average respectively. Round the result to nearest whole number.
+
+SELECT ROUND(MAX(Staff_sal),0) as Maximum,
+ROUND(MIN(Staff_sal),0) as Minimum,
+ROUND(SUM(Staff_sal),0) as Sum,
+ROUND(AVG(Staff_sal),0) as Average
+FROM staff_Masters;
+
+17. Edit the above query and display the same for each Department Name.
+
+SELECT Department_Masters.Dept_Name,
+ROUND(MAX(Staff_sal),0) as Maximum,
+ROUND(MIN(Staff_sal),0) as Minimum,
+ROUND(SUM(Staff_sal),0) as Sum,
+ROUND(AVG(Staff_sal),0) as Average
+FROM staff_Masters natural join Department_Masters group by Department_Masters.Dept_Name;
+
+
+
+18. Write a query to display number of people in each Department. Output should display Department
+ Code, Department Name and Number of People.
+
+select A.dept_code,B.dept_name, count(a.dept_code) as "number of employee"
+from staff_masters A, Department_masters B
+where A.dept_code=B.dept_code
+group by A.dept_code,B.dept_name;
+
+
+19. Determine the number of managers without listing them. Label the column as ‘Total Number of 
+Managers’.
+
+select count(distinct(Mgr_code)) as "Total Number of Managers" from staff_Masters;
+
+
+20. Display Manager Code, Manager Name and salary of lowest paid staff in that manager’s team.
+ Exclude any group where minimum salary is less than 10000. Order the result on descending order
+ of salary.
+
+select A.Staff_code,   A.Staff_Name,min(b.staff_sal)
+from staff_Masters A ,  staff_Masters B
+where A.staff_code=B.mgr_code
+group by A.staff_code,A.staff_name
+having min(B.staff_sal)>=10000
+order by 3 desc;

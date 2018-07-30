@@ -1,0 +1,159 @@
+3.1 : Modify the programs created in Lab2 to implement Exception Handling
+
+
+DECLARE 
+var_num1 NUMBER := 5;
+BEGIN
+
+DECLARE 
+var_num1 NUMBER := 10;
+BEGIN
+
+IF (var_num1 = 5) THEN
+DBMS_OUTPUT.PUT_LINE(var_num1);
+ELSIF (var_num1 = 10) THEN
+DBMS_OUTPUT.PUT_LINE(var_num1);
+END IF;
+END;
+DBMS_OUTPUT.PUT_LINE(var_num1);
+
+
+EXCEPTION 
+   WHEN no_data_found THEN 
+      dbms_output.put_line('No such record!'); 
+   WHEN others THEN 
+      dbms_output.put_line('Error!'); 
+
+End;
+
+=========================================================================================================================
+
+DECLARE 
+DEPT_CODE1 NUMBER;
+staffCode NUMBER(6); 
+name varchar2 (20);
+staffSal NUMBER (8);
+exception1  EXCEPTION; 
+
+
+CURSOR Staff_rec IS
+select staff_name, staff_code, staff_sal from staff_masters  where dept_code= DEPT_CODE1;
+
+BEGIN 
+DEPT_CODE1:=&DEPT_CODE1;
+
+RAISE exception1;
+
+OPEN Staff_rec;
+LOOP
+fetch Staff_rec into name,staffCode, staffSal;
+EXIT when staff_rec %NOTFOUND; 
+ 
+dbms_output.put_line('Staff CODE: ' || staffCode ||'Staff Name: ' || name || 'Staff SALARY: ' || staffSal);  
+
+END LOOP;
+CLOSE Staff_rec;
+
+EXCEPTION 
+   WHEN no_data_found THEN 
+      dbms_output.put_line('No such record!'); 
+   when invalid_number THEN
+      dbms_output.put_line('department code should be numeric!'); 
+   when VALUE_ERROR THEN
+      dbms_output.put_line('Value error exception'); 
+   WHEN others THEN 
+      dbms_output.put_line('Enter a valid staff code!');
+
+
+END; 
+/
+
+================================================================================================================================
+
+
+
+3.2 The following PL/SQL block attempts to calculate bonus of staff for a given MGR_CODE. Bonus is to be considered as twice of salary.
+Though Exception Handling has been implemented but block is unable to handle the same.
+Debug and verify the current behavior to trace the problem.
+
+
+
+DECLARE
+V_BONUS STAFF_MASTER.STAFF_SAL%TYPE;
+V_SAL STAFF_MASTER.STAFF_SAL%TYPE;
+
+BEGIN
+SELECT STAFF_SAL INTO V_SAL FROM STAFF_MASTER WHERE STAFF_CODE=100016;
+
+V_BONUS:=2*V_SAL;
+DBMS_OUTPUT.PUT_LINE('STAFF SALARY IS ' || V_SAL);
+DBMS_OUTPUT.PUT_LINE('STAFF BONUS IS ' || V_BONUS);
+
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('GIVEN CODE IS NOT VALID.ENTER VALID CODE');
+END;
+
+
+3.3 Rewrite the above block to achieve the requirement.
+
+
+DECLARE
+V_BONUS STAFF_MASTER.STAFF_SAL%TYPE;
+V_SAL STAFF_MASTER.STAFF_SAL%TYPE;
+
+BEGIN
+SELECT STAFF_SAL INTO V_SAL FROM STAFF_MASTER WHERE STAFF_CODE=100016;
+
+V_BONUS:=2*V_SAL;
+DBMS_OUTPUT.PUT_LINE('STAFF SALARY IS ' || V_SAL);
+DBMS_OUTPUT.PUT_LINE('STAFF BONUS IS ' || V_BONUS);
+
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('GIVEN CODE IS NOT VALID.ENTER VALID CODE');
+END;
+
+
+
+3.4
+Predict the output of the following block ? What corrections would be needed to make it more efficient?
+
+
+BEGIN
+      DECLARE
+      fname staff_master.staff_name%TYPE;
+      BEGIN
+      SELECT staff_name INTO fname
+      FROM staff_master
+      WHERE 1=2;
+
+      DBMS_OUTPUT.PUT_LINE('This statement will print');
+      EXCEPTION
+      WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Some inner block error');
+      END;
+
+ EXCEPTION
+ WHEN NO_DATA_FOUND THEN
+ DBMS_OUTPUT.PUT_LINE('No data found in fname');
+
+ WHEN OTHERS THEN
+ DBMS_OUTPUT.PUT_LINE('Some outer block error');
+ END;
+
+
+
+
+3.5 Debug the above block to trace the flow of control. 
+      Additionally one can make appropriate changes in Select statement defined in the 
+      block to check the flow.
+
+
+
+
+
+3.6: Write a PL/SQL program to check for the commission for an employee no 7369. If no commission exists,
+ then display the error message. Use Exceptions. 
+
+
